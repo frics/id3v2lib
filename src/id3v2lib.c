@@ -604,12 +604,3 @@ void tag_set_album_cover_from_bytes(char* album_cover_bytes, char* mimetype, int
 
     set_album_cover_frame(album_cover_bytes, mimetype, picture_size, album_cover_frame);
 }
-
-void tag_set_private_data(char* private_data, char* owner_identifier, ID3v2_tag* tag) {
-    ID3v2_frame* private_frame = NULL;
-    if ( ! (private_frame = tag_get_private_data(tag))) {
-        private_frame = new_frame();
-        add_to_list(tag->frames, private_frame);
-    }
-    set_text_frame(private_data, )
-}
