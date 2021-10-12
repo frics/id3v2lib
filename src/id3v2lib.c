@@ -444,7 +444,7 @@ void tag_set_private_data(char* private_data, char encoding, ID3v2_tag* tag) {
     ID3v2_frame* private_frame = NULL;
 
     if( ! (private_frame = tag_get_private_data(tag))) {
-        private_data = new_frame();
+        private_frame = new_frame();
         add_to_list(tag->frames, private_frame);
     }
 
