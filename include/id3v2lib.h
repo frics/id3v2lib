@@ -23,6 +23,7 @@ extern "C" {
 ID3v2_tag* load_tag(const char* file_name);
 ID3v2_tag* load_tag_with_buffer(char* buffer, int length);
 void remove_tag(const char* file_name);
+int get_tag_size(ID3v2_tag* tag);
 void set_tag(const char* file_name, ID3v2_tag* tag);
 
 // Getter functions
