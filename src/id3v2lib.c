@@ -358,13 +358,34 @@ ID3v2_frame* tag_get_album_cover(ID3v2_tag* tag)
     return get_from_list(tag->frames, "APIC");
 }
 
-ID3v2_frame* tag_get_private_data(ID3v2_tag* tag) {
-    if(tag == NULL) {
+ID3v2_frame* tag_get_server_time(ID3v2_tag* tag)
+{
+    if(tag == NULL)
+    {
         return NULL;
     }
 
-    return get_from_list(tag->frames, "PRIV");
+    return get_from_list(tag->frames, "ST");
 }
+
+ID3v2_frame* tag_get_client_time(ID3v2_tag* tag)
+{
+    if(tag == NULL)
+    {
+        return NULL;
+    }
+
+    return get_from_list(tag->frames, "CT");
+}
+
+// ID3v2_frame* tag_get_private_data(ID3v2_tag* tag) {
+    // if(tag == NULL) {
+        // return NULL;
+    // }
+
+    // return get_from_list(tag->frames, "PRIV");
+// }
+
 /**
  * Setter functions
  */
@@ -422,33 +443,52 @@ void set_album_cover_frame(char* album_cover_bytes, char* mimetype, int picture_
     free(frame_data);
 }
 
-void set_private_frame(char* data, char encoding, char* owner_identifier, ID3v2_frame* frame) {
-    char *frame_data;
+// void set_private_frame(char* data, char encoding, char* owner_identifier, ID3v2_frame* frame) {
+    // char *frame_data;
 
     //Frame Id, Frame size setting
-    memcpy(frame->frame_id, owner_identifier, 4);
-    frame->size = 1 + (int) strlen(data);
+    // memcpy(frame->frame_id, owner_identifier, 4);
+//     frame->size = 1 + (int) strlen(data);
 
-    // 공간 할당
-    frame_data = (char*) malloc(frame->size * sizeof(char));
-    frame->data = (char*) malloc(frame->size * sizeof(char));
+//     // 공간 할당
+//     frame_data = (char*) malloc(frame->size * sizeof(char));
+//     frame->data = (char*) malloc(frame->size * sizeof(char));
 
-    // 내용 쓰기
-    sprintf(frame_data, "%c%s", encoding, data);
-    memcpy(frame->data, frame_data, frame->size);
+//     // 내용 쓰기
+//     sprintf(frame_data, "%c%s", encoding, data);
+//     memcpy(frame->data, frame_data, frame->size);
 
-    free(frame_data);
-}
+//     free(frame_data);
+// }
 
-void tag_set_private_data(char* private_data, char encoding, ID3v2_tag* tag) {
-    ID3v2_frame* private_frame = NULL;
+// void tag_set_private_data(char* private_data, char encoding, ID3v2_tag* tag) {
+    // ID3v2_frame* private_frame = NULL;
 
-    if( ! (private_frame = tag_get_private_data(tag))) {
-        private_frame = new_frame();
-        add_to_list(tag->frames, private_frame);
+//     if( ! (private_frame = tag_get_private_data(tag))) {
+//         private_frame = new_frame();
+//         add_to_list(tag->frames, private_frame);
+//     }
+
+//     set_private_frame(private_data, encoding, PRIVATE_FRAME_ID, private_frame);
+// }
+
+void tag_set_server_time(char* server_time, char encoding, ID3v2_tag* tag) {
+    ID3v2_frame* time_frame = NULL;
+    if(!(time_frame = tag_get_server_time(tag))) {
+        time_frame = new_frame();
     }
 
-    set_private_frame(private_data, encoding, PRIVATE_FRAME_ID, private_frame);
+    set_text_frame(server_time, encoding, SERVER_TIME_FRAME_ID, time_frame);
+}
+
+void tag_set_client_time(char* client_time, char encoding, ID3v2_tag* tag) {
+    ID3v2_frame* time_frame = NULL;
+
+    if(!(time_frame = tag_get_client_time(tag))) {
+        time_frame = new_frame();
+    }
+
+    set_text_frame(client_time, encoding, CLIENT_TIME_FRAME_ID, time_frame);
 }
 
 void tag_set_title(char* title, char encoding, ID3v2_tag* tag)
