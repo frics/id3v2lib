@@ -16,6 +16,8 @@
 ID3v2_tag* new_tag()
 {
     ID3v2_tag* tag = (ID3v2_tag*) malloc(sizeof(ID3v2_tag));
+    // avoid invalid pointer
+    tag->raw = NULL;
     tag->tag_header = new_header();
     tag->frames = new_frame_list();
     return tag;
@@ -24,6 +26,7 @@ ID3v2_tag* new_tag()
 ID3v2_header* new_header()
 {
     ID3v2_header* tag_header = (ID3v2_header*) malloc(sizeof(ID3v2_header));
+
     if(tag_header != NULL)
     {
         memset(tag_header->tag, '\0', ID3_HEADER_TAG);
@@ -39,17 +42,21 @@ ID3v2_header* new_header()
 ID3v2_frame* new_frame()
 {
     ID3v2_frame* frame = (ID3v2_frame*) malloc(sizeof(ID3v2_frame));
+    // frame->data = NULL;
+
     return frame;
 }
 
 ID3v2_frame_list* new_frame_list()
 {
     ID3v2_frame_list* list = (ID3v2_frame_list*) malloc(sizeof(ID3v2_frame_list));
+
     if(list != NULL)
     {
         list->frame = NULL;
         list->next = NULL;
         list->start = NULL;
+        list->last = NULL;
     }
     return list;
 }

@@ -78,14 +78,11 @@ void add_to_list(ID3v2_frame_list* main, ID3v2_frame* frame)
     ID3v2_frame_list *current;
 
     // if empty list
-    if(main->start == NULL)
-    {
+    if(main->start == NULL){
         main->start = main;
         main->last = main;
         main->frame = frame;
-    }
-    else
-    {
+    } else {
         current = new_frame_list();
         current->frame = frame;
         current->start = main->start;
@@ -109,17 +106,32 @@ ID3v2_frame* get_from_list(ID3v2_frame_list* list, char* frame_id)
 void free_tag(ID3v2_tag* tag)
 {
     ID3v2_frame_list *list;
+    ID3v2_frame_list *tmp;
+
 
     free(tag->raw);
+
     free(tag->tag_header);
+
     list = tag->frames;
+
     while(list != NULL)
     {
-        if (list->frame) free(list->frame->data);
+        printf("FREE LOOP\n");
+        if (list->frame != NULL) {
+            printf("FREE frame data\n");
+            free(list->frame->data);
+        }
         free(list->frame);
+
+        tmp = list;
         list = list->next;
+        free(tmp);
+        tmp = NULL;
+    //    list = list->next;
     }
-    free(list);
+
+    // free(list);
     free(tag);
 }
 
